@@ -62,10 +62,11 @@ def insert_and_format():
 
     user_data = affected_user_entry.get().strip().split('\t')
 
-    if len(user_data) == 5:
-        Name, email, serviceId, lastBackupDate, sizeInGb = user_data
-    else:
-        Name, email, serviceId, lastBackupDate, sizeInGb = '', '', '', '', ''
+    Name = user_data[0] if len(user_data) > 0 and user_data[0] else "null"
+    email = user_data[1] if len(user_data) > 1 and user_data[1] else "null"
+    serviceId = user_data[2] if len(user_data) > 2 and user_data[2] else "null"
+    lastBackupDate = user_data[3] if len(user_data) > 3 and user_data[3] else "null"
+    sizeInGb = user_data[4] if len(user_data) > 4 and user_data[4] else "null"
 
 
     # Populate the input fields
@@ -109,41 +110,41 @@ def call_openSearchURL():
     openSearchURL(customer_id, serviceId)
 
 
-def toggle_dark_mode():
-    current_theme = root.option_get('theme', 'light')  # Get the current theme
+# # def toggle_dark_mode():  **** depreciated ****
+#     current_theme = root.option_get('theme', 'light')  # Get the current theme
 
-    if current_theme == 'light':
-        # Dark mode is currently off, so enable dark mode
-        root.configure(bg='#333333')
-        dark_mode_button.configure(bg='#555555', fg='#ffffff', activebackground='#777777')
-        format_text.configure(bg='#333333', fg='#ffffff')
+#     if current_theme == 'light':
+#         # Dark mode is currently off, so enable dark mode
+#         root.configure(bg='#333333')
+#         dark_mode_button.configure(bg='#555555', fg='#ffffff', activebackground='#777777')
+#         format_text.configure(bg='#333333', fg='#ffffff')
 
-        # Configure tab_checkbox using ttk.Style
-        style = ttk.Style()
-        style.configure("Dark.TCheckbutton", background='#333333', foreground='#ffffff', indicatorbackground='#333333')
-        tab_checkbox.configure(style="Dark.TCheckbutton")
+#         # Configure tab_checkbox using ttk.Style
+#         style = ttk.Style()
+#         style.configure("Dark.TCheckbutton", background='#333333', foreground='#ffffff', indicatorbackground='#333333')
+#         tab_checkbox.configure(style="Dark.TCheckbutton")
 
-        # Configure other entry widgets
-        for entry in (customer_data_entry, customer_id_entry, node_pod_entry, domain_entry,
-                      summary_entry, affected_user_entry, name_entry, email_entry,
-                      serviceId_entry, lastBackupDate_entry, sizeInGb_entry):
-            entry.configure(bg='#333333', fg='#ffffff', insertbackground='#ffffff')
-    else:
-        # Dark mode is currently on, so disable dark mode
-        root.configure(bg='')
-        dark_mode_button.configure(bg='', fg='', activebackground='')
-        format_text.configure(bg='', fg='')
+#         # Configure other entry widgets
+#         for entry in (customer_data_entry, customer_id_entry, node_pod_entry, domain_entry,
+#                       summary_entry, affected_user_entry, name_entry, email_entry,
+#                       serviceId_entry, lastBackupDate_entry, sizeInGb_entry):
+#             entry.configure(bg='#333333', fg='#ffffff', insertbackground='#ffffff')
+#     else:
+#         # Dark mode is currently on, so disable dark mode
+#         root.configure(bg='')
+#         dark_mode_button.configure(bg='', fg='', activebackground='')
+#         format_text.configure(bg='', fg='')
 
-        # Configure tab_checkbox using ttk.Style
-        style = ttk.Style()
-        style.configure("Light.TCheckbutton", background='', foreground='', indicatorbackground='')
-        tab_checkbox.configure(style="Light.TCheckbutton")
+#         # Configure tab_checkbox using ttk.Style
+#         style = ttk.Style()
+#         style.configure("Light.TCheckbutton", background='', foreground='', indicatorbackground='')
+#         tab_checkbox.configure(style="Light.TCheckbutton")
 
-        # Configure other entry widgets
-        for entry in (customer_data_entry, customer_id_entry, node_pod_entry, domain_entry,
-                      summary_entry, affected_user_entry, name_entry, email_entry,
-                      serviceId_entry, lastBackupDate_entry, sizeInGb_entry):
-            entry.configure(bg='', fg='', insertbackground='')
+#         # Configure other entry widgets
+#         for entry in (customer_data_entry, customer_id_entry, node_pod_entry, domain_entry,
+#                       summary_entry, affected_user_entry, name_entry, email_entry,
+#                       serviceId_entry, lastBackupDate_entry, sizeInGb_entry):
+#             entry.configure(bg='', fg='', insertbackground='')
 
 # ... (rest of your code remains unchanged)
 
@@ -154,8 +155,8 @@ root.title("Ticket Machine")
 use_tab_values = tk.BooleanVar(value=True)
 
 # Button to Toggle Dark Mode
-dark_mode_button = tk.Button(root, text="Toggle Dark Mode", command=toggle_dark_mode)
-dark_mode_button.pack()
+# dark_mode_button = tk.Button(root, text="Toggle Dark Mode", command=toggle_dark_mode)
+# dark_mode_button.pack()
 
 # Checkbox to choose between tab-separated values and direct entry
 tab_checkbox = ttk.Checkbutton(root, text="Use Tab-Separated Values", variable=use_tab_values)
