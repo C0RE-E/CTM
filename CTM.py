@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+import webbrowser 
+from OsURL import openSearchURL
 
 def get_customer_data():
     if use_tab_values.get():
@@ -41,13 +43,46 @@ def insert_and_format():
     # Create variable message
     variable_message = f"{selected_var} is failing backups {failure_message}"
 
-    # Get and process customer data
-    customer_id, node_pod, domain = get_customer_data()
+    customer_data = customer_data_entry.get().strip().split('\t')
 
-    # Get and process affected user data
-    Name, email, serviceId, lastBackupDate, sizeInGb = get_affected_user_data()
+    if len(customer_data) == 3:
+        customer_id, node_pod, domain = customer_data
+    else:
+        customer_id, node_pod, domain = '', '', ''
 
-    # Get summary data
+    # Populate the input fields
+    customer_id_entry.delete(0, tk.END)
+    customer_id_entry.insert(0, customer_id)
+
+    node_pod_entry.delete(0, tk.END)
+    node_pod_entry.insert(0, node_pod)
+
+    domain_entry.delete(0, tk.END)
+    domain_entry.insert(0, domain)
+
+    user_data = affected_user_entry.get().strip().split('\t')
+
+    if len(user_data) == 5:
+        Name, email, serviceId, lastBackupDate, sizeInGb = user_data
+    else:
+        Name, email, serviceId, lastBackupDate, sizeInGb = '', '', '', '', ''
+
+
+    # Populate the input fields
+    affected_user_entry.delete(0, tk.END)
+    affected_user_entry.insert(0, Name)
+
+    email_entry.delete(0, tk.END)
+    email_entry.insert(0, email)
+
+    serviceId_entry.delete(0, tk.END)
+    serviceId_entry.insert(0, serviceId)
+
+    lastBackupDate_entry.delete(0, tk.END)
+    lastBackupDate_entry.insert(0, lastBackupDate)
+
+    sizeInGb_entry.delete(0, tk.END)
+    sizeInGb_entry.insert(0, sizeInGb)    
     summary_data = summary_entry.get().strip()
 
     # Combine all messages
@@ -67,6 +102,12 @@ def insert_and_format():
 
     # Insert the combined result into the format box
     format_text.insert(tk.END, result_message)
+
+def call_openSearchURL():
+    customer_id = customer_id_entry.get().strip()
+    serviceId = serviceId_entry.get().strip()
+    openSearchURL(customer_id, serviceId)
+
 
 def toggle_dark_mode():
     current_theme = root.option_get('theme', 'light')  # Get the current theme
@@ -107,7 +148,7 @@ def toggle_dark_mode():
 # ... (rest of your code remains unchanged)
 
 root = tk.Tk()
-root.title("CTM")
+root.title("Ticket Machine")
 
 # BooleanVar to determine whether to use tab-separated values
 use_tab_values = tk.BooleanVar(value=True)
@@ -226,6 +267,9 @@ sizeInGb_entry.pack()
 # Button to Insert Variable and Format Data
 insert_and_format_button = tk.Button(root, text="Submit", command=insert_and_format)
 insert_and_format_button.pack()
+
+openSearchURL_Button = tk.Button(root, text="OpenSearch", command=call_openSearchURL)
+openSearchURL_Button.pack()
 
 # Format Text Area
 format_text = tk.Text(root, height=12, width=40)
